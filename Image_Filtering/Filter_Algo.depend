@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1495866749 source:c:\users\uma\desktop\c++\filter_algo\filter_algo.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+
