@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1489389941 source:c:\users\uma\desktop\c++\bayers_algo\bayers_algo.cpp
-	<iostream>
-	<fstream>
-	<string>
-	<stdio.h>
-	<stdlib.h>
-
