@@ -50,7 +50,7 @@ int main()
     char* chbuffer=new char[sizeof(BITMAPFILEHEADER)];
     char* cdhbuffer=new char[sizeof(BITMAPINFOHEADER)];
 
-    myfile.open("image4.bmp",ios::binary|ios::in);
+    myfile.open("input_image.bmp",ios::binary|ios::in);
 
     myfile.seekp(0,ios::beg);
     myfile.read(chbuffer,sizeof(BITMAPFILEHEADER));
@@ -69,7 +69,7 @@ myfile.read(pixelbuff,pixelsize);
 rgb=new RGBQUAD[w*h];
 rgb=(RGBQUAD*)pixelbuff;
 
-cout<<"h:"<<h<<"w:"<<w<<endl;
+//Demosaic of image using average of neighbors
 
 for(i=0;i<h;i++){
  for(j=0;j<w;j++)
@@ -78,16 +78,13 @@ for(i=0;i<h;i++){
         if(j-1<0){
              rgb[i*w+j].blue=rgb[(i*w)+j+1].blue;}
         else if(j+1>w-1){
-            //std::cout<<"j+1"<<endl;
              rgb[i*w+j].blue=rgb[(i*w)+j-1].blue;}
         else {
-            //std::cout<<"first else"<<endl;
+            
             rgb[i*w+j].blue=(char)(((int)rgb[i*w+j+1].red +(int)rgb[i*w+j-1].red)/2);}
          if(i+1>h-1){
-            //std::cout<<"i+1"<<endl;
                 rgb[i*w+j].red=rgb[(i-1)*w+j].red;}
                 else if(i-1<0){
-                    //std::cout<<"i-1"<<endl;
                   rgb[i*w+j].red=rgb[(i+1)*w+j].red;}
                 else
                  rgb[i*w+j].red=(char)(int)(((int)rgb[(i+1)*w+j].red +(int)rgb[(i-1)*w+j].red)/2);
@@ -97,7 +94,6 @@ for(i=0;i<h;i++){
 
 
 else if (int(rgb[i*w+j].red)!=0){
-        //std::cout<<i<<" "<<j<<endl;
         if(j-1<0){
              if(i+1>h-1){
 
@@ -151,7 +147,6 @@ else if (int(rgb[i*w+j].red)!=0){
 
     else if (int(rgb[i*w+j].blue)!=0){
         if(j-1<0){
-            //cout<<"j-1"<<endl;
              if(i+1>h-1){
                 rgb[i*w+j].green=(char)(((int)rgb[(i*w)+j+1].green +(int)rgb[(i-1)*w+j].green)/2);
                 rgb[i*w+j].red=rgb[(i-1)*w+j+1].red;
@@ -166,7 +161,6 @@ else if (int(rgb[i*w+j].red)!=0){
         }
 
         else if(j+1>w-1){
-//cout<<"j+1"<<endl;
             if(i+1>h-1){
                 rgb[i*w+j].green=(char)(((int)rgb[(i*w)+j-1].green +(int)rgb[(i-1)*w+j].green)/2);
                 rgb[i*w+j].red=rgb[(i-1)*w+j-1].red;
@@ -199,7 +193,7 @@ else if (int(rgb[i*w+j].red)!=0){
 pixelbuff=(char*)rgb;
 myfile.close();
 
-myfile.open("image5.bmp",ios::binary|ios::out);
+myfile.open("output_image.bmp",ios::binary|ios::out);
 myfile.seekp(0x00,ios::beg);
 myfile.write(chbuffer,sizeof(BITMAPFILEHEADER));
 myfile.seekp(0x0E,ios::beg);

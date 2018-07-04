@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1493101348 source:c:\users\uma\desktop\c++\bayer_demosaic\bayer_demosaic.cpp
-	<iostream>
-	<fstream>
-	<string>
-	<stdio.h>
-	<stdlib.h>
-
