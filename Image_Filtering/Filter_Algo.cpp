@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int radius=6;
+int radius=6; //set filter radius
 
 
 typedef struct{
@@ -78,7 +78,7 @@ int main()
         gxy[i]=new double [range];
 
 
-     gaussian_filter(radius,gxy);
+     gaussian_filter(radius,gxy); //create the gaussian filter kernel
 
     BITMAPFILEHEADER* fileheader;
     BITMAPINFOHEADER* infoheader;
@@ -86,7 +86,7 @@ int main()
     char* chbuffer=new char[sizeof(BITMAPFILEHEADER)];
     char* chinfobuffer=new char[sizeof(BITMAPINFOHEADER)];
 
-    myfile.open("image1.bmp",ios::binary|ios::in); //where is the error check???
+    myfile.open("input_image.bmp",ios::binary|ios::in); 
 
     myfile.seekp(0,ios::beg);
     myfile.read(chbuffer,sizeof(BITMAPFILEHEADER));
@@ -108,30 +108,26 @@ RGBQUAD* rgbcopy;
 rgbcopy=rgb;
 float sumr,sumg,sumb;
 
-
+//gaussian filter on image
 for(i=radius;i<imageheight-radius;i++){
-        //std::cout<<i<<endl;
     for(j=radius;j<imagewidth-radius;j++){
            sumr=0;sumg=0;sumb=0;
-           //std::cout<<j<<endl;
         for(int k=-radius;k<=radius;k++)
         for(int l=-radius;l<=radius;l++)
 {
-    //std::cout<<k<<" "<<l<<endl;
     sumr=sumr + ((int)rgbcopy[(i+k)*imagewidth+j+l].red)*gxy[k+radius][l+radius];
     sumg=sumg + ((int)rgbcopy[(i+k)*imagewidth+j+l].green)*gxy[k+radius][l+radius];
     sumb=sumb + ((int)rgbcopy[(i+k)*imagewidth+j+l].blue)*gxy[k+radius][l+radius];
-    //cout<<"color"<<endl;
+
 }
 rgb[i*imagewidth+j].red=(int)sumr;
 rgb[i*imagewidth+j].green=(int)sumg;
 rgb[i*imagewidth+j].blue=(int)sumb;
-//cout<<"final assign"<<endl;
     }}
 pixelbuff=(char*)rgb;
 myfile.close();
 
-myfile.open("image4.bmp",ios::binary|ios::out);
+myfile.open("output_image.bmp",ios::binary|ios::out);
 myfile.seekp(0x00,ios::beg);
 myfile.write(chbuffer,sizeof(BITMAPFILEHEADER));
 myfile.seekp(0x0E,ios::beg);
@@ -139,7 +135,6 @@ myfile.write(chinfobuffer,sizeof(BITMAPINFOHEADER));
 myfile.seekp(0x36,ios::beg);
 myfile.write(pixelbuff,pixelsize);
 
-//cout<<"pixel assign"<<endl;
 
     myfile.close();
 
@@ -150,8 +145,6 @@ myfile.write(pixelbuff,pixelsize);
     for (i=0;i<range;i++)
         delete[] gxy[i];
     delete[] gxy;
-
-    //free(rgb);
 
 
     return 0;
