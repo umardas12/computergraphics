@@ -50,7 +50,7 @@ int main()
     char* chbuffer=new char[sizeof(BITMAPFILEHEADER)];
     char* cdhbuffer=new char[sizeof(BITMAPINFOHEADER)];
 
-    myfile.open("image3.bmp",ios::binary|ios::in);
+    myfile.open("input_image.bmp",ios::binary|ios::in);
 
     myfile.seekp(0,ios::beg);
     myfile.read(chbuffer,sizeof(BITMAPFILEHEADER));
@@ -64,12 +64,12 @@ h=dibheader->bmpheight;
 pixelsize=w*h*3;
 char* pixelbuff=new char[pixelsize];
 
-myfile.seekp(0x36,ios::beg);
+myfile.seekp(0x36,ios::beg); //skip the header and read the file
 myfile.read(pixelbuff,pixelsize);
 rgb=new RGBQUAD[w*h];
 rgb=(RGBQUAD*)pixelbuff;
 
-
+//Bayers Filter
 
 for(i=0;i<h;i++){
 for(j=0;j<w;j++)
@@ -96,7 +96,8 @@ for(j=0;j<w;j++)
 pixelbuff=(char*)rgb;
 myfile.close();
 
-myfile.open("image4.bmp",ios::binary|ios::out);
+//write to output image
+myfile.open("output_image.bmp",ios::binary|ios::out);
 myfile.seekp(0x00,ios::beg);
 myfile.write(chbuffer,sizeof(BITMAPFILEHEADER));
 myfile.seekp(0x0E,ios::beg);
@@ -105,7 +106,7 @@ myfile.seekp(0x36,ios::beg);
 myfile.write(pixelbuff,pixelsize);
 
     myfile.close();
-
+//release memory
     free(pixelbuff);
     free(chbuffer);
     free(cdhbuffer);
